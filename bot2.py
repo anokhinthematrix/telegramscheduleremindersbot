@@ -298,6 +298,19 @@ scheduler.start()
 
 print("Bot is running...")
 
+import http.server
+import socketserver
+import threading
+
+def keep_alive():
+    PORT = 10000
+    Handler = http.server.SimpleHTTPRequestHandler
+
+    with socketserver.TCPServer(("", PORT), Handler) as httpd:
+        httpd.serve_forever()
+
+threading.Thread(target=keep_alive, daemon=True).start()
+
 while True:
     handle_updates()
     time.sleep(2)
